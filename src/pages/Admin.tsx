@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserManagement } from "@/components/admin/UserManagement";
 import { OrderManagement } from "@/components/admin/OrderManagement";
+import { ProductManagement } from "@/components/admin/ProductManagement";
 import { Settings } from "@/components/admin/Settings";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -29,7 +30,7 @@ const Admin = () => {
       
       <div className="flex-1 container mx-auto px-4 py-8 max-w-6xl">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Yönetici Paneli</h1>
+          <h1 className="text-3xl font-bold">Yapımarket Yönetici Paneli</h1>
           <Button onClick={() => toast({ title: "İşlem başarılı", description: "Değişiklikler kaydedildi." })}>
             Değişiklikleri Kaydet
           </Button>
@@ -84,12 +85,17 @@ const Admin = () => {
         <Tabs defaultValue="kullanicilar" value={activeTab} onValueChange={setActiveTab} className="space-y-4">
           <TabsList className="mb-4">
             <TabsTrigger value="kullanicilar">Kullanıcılar</TabsTrigger>
+            <TabsTrigger value="urunler">Ürünler</TabsTrigger>
             <TabsTrigger value="siparisler">Siparişler</TabsTrigger>
             <TabsTrigger value="ayarlar">Ayarlar</TabsTrigger>
           </TabsList>
           
           <TabsContent value="kullanicilar">
             <UserManagement />
+          </TabsContent>
+          
+          <TabsContent value="urunler">
+            <ProductManagement />
           </TabsContent>
           
           <TabsContent value="siparisler">

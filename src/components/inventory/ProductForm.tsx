@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { 
   Select,
   SelectContent,
@@ -24,9 +25,11 @@ const ProductForm = ({ onSubmit, onCancel, product }: ProductFormProps) => {
     firm: product?.firm || "",
     stock: product?.stock || "",
     price: product?.price || "",
+    sku: product?.sku || "",
+    description: product?.description || "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -62,6 +65,17 @@ const ProductForm = ({ onSubmit, onCancel, product }: ProductFormProps) => {
         </div>
         
         <div className="space-y-2">
+          <Label htmlFor="sku">SKU (Stok Kodu)</Label>
+          <Input
+            id="sku"
+            name="sku"
+            value={formData.sku}
+            onChange={handleChange}
+            placeholder="Örn: EG-AK-15-001"
+          />
+        </div>
+        
+        <div className="space-y-2">
           <Label htmlFor="firm">Firma</Label>
           <Select 
             value={formData.firm} 
@@ -80,6 +94,18 @@ const ProductForm = ({ onSubmit, onCancel, product }: ProductFormProps) => {
               <SelectItem value="Norelem">Norelem</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="description">Açıklama</Label>
+          <Textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Ürün açıklaması"
+            rows={3}
+          />
         </div>
         
         <div className="grid grid-cols-2 gap-4">

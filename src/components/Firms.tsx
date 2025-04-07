@@ -6,6 +6,7 @@ const firms = [
   {
     id: 1,
     name: "Elesa Ganter",
+    description: "Endüstriyel komponentler ve makine elemanları",
     icon: "🔧",
     color: "bg-blue-100",
     textColor: "text-blue-800",
@@ -13,6 +14,7 @@ const firms = [
   {
     id: 2,
     name: "Halder",
+    description: "Yüksek kaliteli sıkıştırma ve bağlantı elemanları",
     icon: "⚙️",
     color: "bg-red-100",
     textColor: "text-red-800",
@@ -20,6 +22,7 @@ const firms = [
   {
     id: 3,
     name: "Kipp",
+    description: "Makine ve cihaz yapımı için standart bileşenler",
     icon: "🛠️",
     color: "bg-green-100",
     textColor: "text-green-800",
@@ -27,6 +30,7 @@ const firms = [
   {
     id: 4,
     name: "Winkel",
+    description: "Lineer kılavuz teknolojisi ve taşıma tekniği",
     icon: "📏",
     color: "bg-orange-100",
     textColor: "text-orange-800",
@@ -34,6 +38,7 @@ const firms = [
   {
     id: 5,
     name: "Schmalz",
+    description: "Vakum bileşenleri ve otomasyon çözümleri",
     icon: "🔩",
     color: "bg-purple-100",
     textColor: "text-purple-800",
@@ -41,6 +46,7 @@ const firms = [
   {
     id: 6,
     name: "Norelem",
+    description: "Standart elemanlar ve normlanmış makine parçaları",
     icon: "⚗️",
     color: "bg-yellow-100",
     textColor: "text-yellow-800",
@@ -55,7 +61,8 @@ const Firms = () => {
           <Card className="h-full hover:shadow-md transition-shadow">
             <CardContent className={`${firm.color} ${firm.textColor} p-6 flex flex-col items-center justify-center text-center h-full`}>
               <div className="text-4xl mb-3">{firm.icon}</div>
-              <h3 className="font-medium">{firm.name}</h3>
+              <h3 className="font-medium mb-1">{firm.name}</h3>
+              <p className="text-xs mt-1 opacity-80">{firm.description}</p>
             </CardContent>
           </Card>
         </Link>
