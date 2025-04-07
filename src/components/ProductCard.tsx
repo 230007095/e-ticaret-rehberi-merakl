@@ -13,10 +13,10 @@ interface ProductCardProps {
   oldPrice?: number;
   image: string;
   rating: number;
-  category: string;
+  firm: string;
 }
 
-const ProductCard = ({ id, name, price, oldPrice, image, rating, category }: ProductCardProps) => {
+const ProductCard = ({ id, name, price, oldPrice, image, rating, firm }: ProductCardProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const addToCart = () => {
@@ -60,7 +60,7 @@ const ProductCard = ({ id, name, price, oldPrice, image, rating, category }: Pro
       </div>
       
       <CardContent className="pt-4 flex-grow">
-        <div className="text-sm text-gray-500 mb-1">{category}</div>
+        <div className="text-sm text-gray-500 mb-1">{firm}</div>
         <Link to={`/products/${id}`} className="hover:underline">
           <h3 className="font-semibold mb-2 line-clamp-2 h-12">{name}</h3>
         </Link>

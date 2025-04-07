@@ -21,7 +21,7 @@ interface ProductFormProps {
 const ProductForm = ({ onSubmit, onCancel, product }: ProductFormProps) => {
   const [formData, setFormData] = useState({
     name: product?.name || "",
-    category: product?.category || "",
+    firm: product?.firm || "",
     stock: product?.stock || "",
     price: product?.price || "",
   });
@@ -34,10 +34,10 @@ const ProductForm = ({ onSubmit, onCancel, product }: ProductFormProps) => {
     });
   };
 
-  const handleCategoryChange = (value: string) => {
+  const handleFirmChange = (value: string) => {
     setFormData({
       ...formData,
-      category: value,
+      firm: value,
     });
   };
 
@@ -62,23 +62,22 @@ const ProductForm = ({ onSubmit, onCancel, product }: ProductFormProps) => {
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="category">Kategori</Label>
+          <Label htmlFor="firm">Firma</Label>
           <Select 
-            value={formData.category} 
-            onValueChange={handleCategoryChange}
+            value={formData.firm} 
+            onValueChange={handleFirmChange}
             required
           >
             <SelectTrigger>
-              <SelectValue placeholder="Kategori seçin" />
+              <SelectValue placeholder="Firma seçin" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Elektronik">Elektronik</SelectItem>
-              <SelectItem value="Giyim">Giyim</SelectItem>
-              <SelectItem value="Ev & Yaşam">Ev & Yaşam</SelectItem>
-              <SelectItem value="Spor">Spor</SelectItem>
-              <SelectItem value="Kozmetik">Kozmetik</SelectItem>
-              <SelectItem value="Kitap & Müzik">Kitap & Müzik</SelectItem>
-              <SelectItem value="Ayakkabı">Ayakkabı</SelectItem>
+              <SelectItem value="Elesa Ganter">Elesa Ganter</SelectItem>
+              <SelectItem value="Halder">Halder</SelectItem>
+              <SelectItem value="Kipp">Kipp</SelectItem>
+              <SelectItem value="Winkel">Winkel</SelectItem>
+              <SelectItem value="Schmalz">Schmalz</SelectItem>
+              <SelectItem value="Norelem">Norelem</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -13,7 +13,7 @@ import { ShoppingCart, Heart } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FeaturedProducts from "@/components/FeaturedProducts";
-import Categories from "@/components/Categories";
+import Firms from "@/components/Firms";
 import ProductCard from "@/components/ProductCard";
 
 const Index = () => {
@@ -25,18 +25,18 @@ const Index = () => {
       <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">Hoş Geldiniz!</h1>
-          <p className="text-xl md:text-2xl mb-8">En kaliteli ürünleri en uygun fiyatlarla bulabileceğiniz online alışveriş sitesi</p>
+          <p className="text-xl md:text-2xl mb-8">Endüstriyel komponentlerde güvenilir tedarikçiniz - Yapımarket</p>
           <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
             Alışverişe Başla
           </Button>
         </div>
       </div>
       
-      {/* Categories */}
+      {/* Firms */}
       <div className="py-12 bg-gray-50">
         <div className="container mx-auto max-w-6xl px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center">Kategoriler</h2>
-          <Categories />
+          <h2 className="text-3xl font-bold mb-8 text-center">Firmalar</h2>
+          <Firms />
         </div>
       </div>
       
@@ -57,8 +57,8 @@ const Index = () => {
               <CardContent className="p-0">
                 <div className="bg-indigo-100 p-8 h-full flex flex-col justify-between">
                   <div>
-                    <h3 className="text-2xl font-bold mb-2 text-indigo-800">Yaz İndirimi</h3>
-                    <p className="text-indigo-600 mb-4">Tüm yaz ürünlerinde %50'ye varan indirimler</p>
+                    <h3 className="text-2xl font-bold mb-2 text-indigo-800">Elesa Ganter İndirimi</h3>
+                    <p className="text-indigo-600 mb-4">Tüm Elesa Ganter ürünlerinde %30'a varan indirimler</p>
                   </div>
                   <Button className="w-full md:w-auto">Keşfet</Button>
                 </div>
@@ -70,7 +70,7 @@ const Index = () => {
                 <div className="bg-pink-100 p-8 h-full flex flex-col justify-between">
                   <div>
                     <h3 className="text-2xl font-bold mb-2 text-pink-800">Yeni Gelenler</h3>
-                    <p className="text-pink-600 mb-4">En yeni ürünleri ilk sen keşfet</p>
+                    <p className="text-pink-600 mb-4">En yeni Kipp ve Norelem ürünlerini keşfedin</p>
                   </div>
                   <Button className="w-full md:w-auto bg-pink-500 hover:bg-pink-600">Keşfet</Button>
                 </div>

@@ -6,71 +6,71 @@ import ProductCard from "./ProductCard";
 const dummyProducts = [
   {
     id: 1,
-    name: "Akıllı Telefon Model X",
-    price: 12999.99,
-    oldPrice: 14999.99,
+    name: "Ayarlanabilir Kol",
+    price: 899.99,
+    oldPrice: 1299.99,
     image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
     rating: 4.5,
-    category: "Elektronik"
+    firm: "Elesa Ganter"
   },
   {
     id: 2,
-    name: "Ultra HD 4K Smart TV 55 inç",
-    price: 9999.99,
-    oldPrice: 12999.99,
+    name: "Paslanmaz Çelik Menteşe",
+    price: 249.99,
+    oldPrice: 349.99,
     image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1057&q=80",
     rating: 4,
-    category: "Elektronik"
+    firm: "Elesa Ganter"
   },
   {
     id: 3,
-    name: "Kablosuz Kulaklık",
-    price: 1499.99,
+    name: "Yaylı Pim",
+    price: 89.99,
     image: "https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80",
     rating: 5,
-    category: "Elektronik"
+    firm: "Halder"
   },
   {
     id: 4,
-    name: "Spor Ayakkabı",
-    price: 899.99,
+    name: "Pozisyon Göstergesi",
+    price: 349.99,
     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
     rating: 4,
-    category: "Giyim"
+    firm: "Kipp"
   },
   {
     id: 5,
-    name: "Akıllı Saat",
-    price: 2499.99,
-    oldPrice: 2999.99,
+    name: "Sıkıştırma Kolu",
+    price: 179.99,
+    oldPrice: 249.99,
     image: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80",
     rating: 4.5,
-    category: "Elektronik"
+    firm: "Elesa Ganter"
   },
   {
     id: 6,
-    name: "Kot Pantolon",
-    price: 349.99,
+    name: "Ayarlanabilir Ayak",
+    price: 149.99,
     image: "https://images.unsplash.com/photo-1604176354204-9268737828e4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
     rating: 3.5,
-    category: "Giyim"
+    firm: "Schmalz"
   },
   {
     id: 7,
-    name: "Kahve Makinesi",
-    price: 2999.99,
+    name: "Kelepçe",
+    price: 129.99,
     image: "https://images.unsplash.com/photo-1608354580875-30bd4168b351?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
     rating: 4.5,
-    category: "Mutfak"
+    firm: "Winkel"
   },
   {
     id: 8,
-    name: "Bluetooth Hoparlör",
-    price: 799.99,
-    oldPrice: 1299.99,
+    name: "Vidalı Mil",
+    price: 299.99,
+    oldPrice: 449.99,
     image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1036&q=80",
     rating: 4,
-    category: "Elektronik"
+    firm: "Norelem"
   }
 ];
 
@@ -88,7 +88,7 @@ const FeaturedProducts = () => {
           oldPrice={product.oldPrice}
           image={product.image}
           rating={product.rating}
-          category={product.category}
+          firm={product.firm}
         />
       ))}
     </div>

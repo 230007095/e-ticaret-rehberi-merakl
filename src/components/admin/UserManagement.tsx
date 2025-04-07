@@ -17,11 +17,11 @@ export const UserManagement = () => {
   
   // Örnek kullanıcı verileri
   const users = [
-    { id: 1, name: "Ahmet Yılmaz", email: "ahmet@ornek.com", role: "Admin", lastLogin: "2 saat önce" },
-    { id: 2, name: "Mehmet Kaya", email: "mehmet@ornek.com", role: "Müşteri", lastLogin: "1 gün önce" },
-    { id: 3, name: "Ayşe Demir", email: "ayse@ornek.com", role: "Müşteri", lastLogin: "3 gün önce" },
-    { id: 4, name: "Fatma Şahin", email: "fatma@ornek.com", role: "Editör", lastLogin: "5 saat önce" },
-    { id: 5, name: "Ali Öztürk", email: "ali@ornek.com", role: "Müşteri", lastLogin: "1 hafta önce" },
+    { id: 1, name: "Ahmet Yılmaz", email: "ahmet@yapimarket.com", role: "Admin", lastLogin: "2 saat önce" },
+    { id: 2, name: "Mehmet Kaya", email: "mehmet@yapimarket.com", role: "Satış Temsilcisi", lastLogin: "1 gün önce" },
+    { id: 3, name: "Ayşe Demir", email: "ayse@yapimarket.com", role: "Satış Temsilcisi", lastLogin: "3 gün önce" },
+    { id: 4, name: "Fatma Şahin", email: "fatma@yapimarket.com", role: "Stok Yöneticisi", lastLogin: "5 saat önce" },
+    { id: 5, name: "Ali Öztürk", email: "ali@yapimarket.com", role: "Müşteri Temsilcisi", lastLogin: "1 hafta önce" },
   ];
 
   const filteredUsers = users.filter(user => 

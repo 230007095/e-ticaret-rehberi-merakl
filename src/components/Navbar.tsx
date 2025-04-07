@@ -29,7 +29,7 @@ const Navbar = () => {
                 <div className="flex flex-col gap-4 mt-8">
                   <Link to="/" className="text-lg font-medium">Ana Sayfa</Link>
                   <Link to="/products" className="text-lg font-medium">Ürünler</Link>
-                  <Link to="/categories" className="text-lg font-medium">Kategoriler</Link>
+                  <Link to="/firms" className="text-lg font-medium">Firmalar</Link>
                   <Link to="/about" className="text-lg font-medium">Hakkımızda</Link>
                   <Link to="/contact" className="text-lg font-medium">İletişim</Link>
                 </div>
@@ -38,13 +38,13 @@ const Navbar = () => {
           </div>
 
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-blue-600">E-Market</Link>
+          <Link to="/" className="text-2xl font-bold text-blue-600">Yapımarket</Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
             <Link to="/" className="font-medium">Ana Sayfa</Link>
             <Link to="/products" className="font-medium">Ürünler</Link>
-            <Link to="/categories" className="font-medium">Kategoriler</Link>
+            <Link to="/firms" className="font-medium">Firmalar</Link>
             <Link to="/about" className="font-medium">Hakkımızda</Link>
             <Link to="/contact" className="font-medium">İletişim</Link>
           </nav>
