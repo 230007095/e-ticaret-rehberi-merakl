@@ -143,13 +143,15 @@ export const ProductManagement = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <div className="flex space-x-2 w-1/3">
-          <Input
-            placeholder="Ürün ara..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-sm"
-            icon={<Search className="h-4 w-4" />}
-          />
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Ürün ara..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-9 max-w-sm"
+            />
+          </div>
         </div>
         
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
@@ -191,7 +193,7 @@ export const ProductManagement = () => {
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.firm}</TableCell>
                 <TableCell className="text-center">
-                  <Badge variant={product.stock > 50 ? "success" : product.stock > 10 ? "warning" : "destructive"}>
+                  <Badge variant={product.stock > 50 ? "default" : product.stock > 10 ? "secondary" : "destructive"}>
                     {product.stock}
                   </Badge>
                 </TableCell>
