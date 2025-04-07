@@ -8,11 +8,14 @@ import { ProductManagement } from "@/components/admin/ProductManagement";
 import { Settings } from "@/components/admin/Settings";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { LogOut } from "lucide-react";
 
 const Admin = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("kullanicilar");
 
   // Normalde burası bir API'dan veri çekecek
@@ -24,6 +27,15 @@ const Admin = () => {
     pendingOrders: 28,
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("yapim-admin-auth");
+    toast({ 
+      title: "Çıkış yapıldı", 
+      description: "Başarıyla çıkış yaptınız." 
+    });
+    navigate("/admin-login");
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -31,9 +43,14 @@ const Admin = () => {
       <div className="flex-1 container mx-auto px-4 py-8 max-w-6xl">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Yapımarket Yönetici Paneli</h1>
-          <Button onClick={() => toast({ title: "İşlem başarılı", description: "Değişiklikler kaydedildi." })}>
-            Değişiklikleri Kaydet
-          </Button>
+          <div className="flex space-x-2">
+            <Button onClick={() => toast({ title: "İşlem başarılı", description: "Değişiklikler kaydedildi." })}>
+              Değişiklikleri Kaydet
+            </Button>
+            <Button variant="outline" onClick={handleLogout}>
+              <LogOut className="h-4 w-4 mr-2" /> Çıkış Yap
+            </Button>
+          </div>
         </div>
 
         {/* Dashboard Overview Cards */}
