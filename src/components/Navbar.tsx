@@ -55,6 +55,8 @@ const Navbar = () => {
                   {isAuthenticated ? (
                     <>
                       <div className="text-lg font-medium">Merhaba, {user?.name}</div>
+                      <Link to="/profile" className="text-lg font-medium">Profilim</Link>
+                      <Link to="/orders" className="text-lg font-medium">Siparişlerim</Link>
                       <Button variant="ghost" className="justify-start px-0" onClick={() => logout()}>
                         <LogOut className="mr-2 h-4 w-4" />
                         Çıkış Yap
