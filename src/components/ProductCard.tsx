@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Heart } from "lucide-react";
-import { toast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
 
 interface ProductCardProps {
   id: number;
@@ -18,19 +18,20 @@ interface ProductCardProps {
 
 const ProductCard = ({ id, name, price, oldPrice, image, rating, firm }: ProductCardProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
-
-  const addToCart = () => {
-    toast({
-      title: "Sepete Eklendi",
-      description: `${name} ürünü sepete eklendi.`,
-    });
-  };
+  const { addItem } = useCart();
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
-    toast({
-      title: isFavorite ? "Favorilerden Çıkarıldı" : "Favorilere Eklendi",
-      description: `${name} ürünü ${isFavorite ? "favorilerden çıkarıldı" : "favorilere eklendi"}.`,
+  };
+
+  const handleAddToCart = () => {
+    addItem({
+      id,
+      name,
+      price,
+      oldPrice,
+      image,
+      firm
     });
   };
 
@@ -91,7 +92,7 @@ const ProductCard = ({ id, name, price, oldPrice, image, rating, firm }: Product
       <CardFooter className="pt-0">
         <Button 
           className="w-full" 
-          onClick={addToCart}
+          onClick={handleAddToCart}
         >
           <ShoppingCart className="h-4 w-4 mr-2" />
           Sepete Ekle
