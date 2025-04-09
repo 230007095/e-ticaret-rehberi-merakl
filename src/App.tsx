@@ -15,6 +15,10 @@ import AdminLogin from "./pages/AdminLogin";
 import Inventory from "./pages/Inventory";
 import NotFound from "./pages/NotFound";
 import AdminGuard from "./components/AdminGuard";
+import Products from "./pages/Products";
+import FirmsPage from "./pages/FirmsPage";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -42,7 +46,11 @@ const App = () => (
                   <Inventory />
                 </AdminGuard>
               } />
-              <Route path="/firms/:id" element={<NotFound />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/firms" element={<FirmsPage />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/firms/:id" element={<FirmsPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
