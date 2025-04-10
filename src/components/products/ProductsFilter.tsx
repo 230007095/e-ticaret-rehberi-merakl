@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Firma listesi
 const firms = ["Tümü", "Elesa Ganter", "Halder", "Kipp", "Winkel", "Schmalz", "Norelem"];
@@ -39,9 +39,12 @@ const ProductsFilter = ({
   setSortOption,
   resetFilters
 }: ProductsFilterProps) => {
+  const navigate = useNavigate();
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    // URL'i güncelle
+    navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
   };
 
   return (

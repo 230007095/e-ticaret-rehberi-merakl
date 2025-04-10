@@ -1,15 +1,20 @@
 
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductsFilter from "@/components/products/ProductsFilter";
 import ProductsList from "@/components/products/ProductsList";
 import { useProductFilters } from "@/hooks/useProductFilters";
 import { dummyProducts } from "@/services/productService";
-import { Button } from "@/components/ui/button";
 
 const Products = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchQuery = queryParams.get("search") || "";
+  
   const {
-    searchQuery,
+    searchQuery: filterSearchQuery,
     setSearchQuery,
     selectedFirm,
     setSelectedFirm,
@@ -20,6 +25,13 @@ const Products = () => {
     filteredProducts,
     resetFilters
   } = useProductFilters(dummyProducts);
+  
+  // URL'den gelen arama sorgusunu filtre state'ine ayarla
+  useEffect(() => {
+    if (searchQuery) {
+      setSearchQuery(searchQuery);
+    }
+  }, [searchQuery, setSearchQuery]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -30,7 +42,7 @@ const Products = () => {
         
         {/* Filtre Alanı */}
         <ProductsFilter
-          searchQuery={searchQuery}
+          searchQuery={filterSearchQuery}
           setSearchQuery={setSearchQuery}
           selectedFirm={selectedFirm}
           setSelectedFirm={setSelectedFirm}

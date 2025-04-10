@@ -18,6 +18,7 @@ import {
 import { ShoppingCart, Search, Menu, User, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -28,8 +29,8 @@ const Navbar = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // In a real app, this would navigate to search results
-      console.log("Searching for:", searchQuery);
+      // Navigate to products page with search query
+      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
     }
   };
 

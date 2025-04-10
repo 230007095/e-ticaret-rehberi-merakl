@@ -28,6 +28,11 @@ export const useProductFilters = (initialProducts: Product[]) => {
     setPriceRange([0, 1500]);
     setSortOption("featured");
   };
+  
+  // Arama işlemini gerçekleştiren fonksiyon
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
 
   return {
     searchQuery,
@@ -39,6 +44,7 @@ export const useProductFilters = (initialProducts: Product[]) => {
     sortOption,
     setSortOption,
     filteredProducts,
-    resetFilters
+    resetFilters,
+    handleSearch
   };
 };
