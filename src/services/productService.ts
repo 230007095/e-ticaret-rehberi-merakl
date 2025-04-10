@@ -111,7 +111,7 @@ export const getFilteredProducts = async (
     }
     
     // Firma filtresi
-    if (selectedFirm && selectedFirm !== "Tümü") {
+    if (selectedFirm && selectedFirm !== "Tümü" && selectedFirm !== "all") {
       query = query.eq('firms.name', selectedFirm);
     }
     

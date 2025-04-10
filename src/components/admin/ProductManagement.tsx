@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Plus, Search, Edit, Trash, FileUp, Filter, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -144,7 +145,8 @@ export const ProductManagement = () => {
               <SelectValue placeholder="Firma Filtrele" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Tüm Firmalar</SelectItem>
+              {/* Fix: Use a non-empty string for the "all firms" option */}
+              <SelectItem value="all">Tüm Firmalar</SelectItem>
               {uniqueFirms.map(firm => (
                 <SelectItem key={firm} value={firm}>{firm}</SelectItem>
               ))}
@@ -160,7 +162,8 @@ export const ProductManagement = () => {
               <SelectValue placeholder="Kategori Filtrele" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Tüm Kategoriler</SelectItem>
+              {/* Fix: Use a non-empty string for the "all categories" option */}
+              <SelectItem value="all">Tüm Kategoriler</SelectItem>
               {uniqueCategories.map(category => (
                 <SelectItem key={category} value={category}>{category}</SelectItem>
               ))}
