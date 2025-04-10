@@ -4,7 +4,7 @@ import { useToast } from "@/components/ui/use-toast";
 import ProductFilters from "@/components/admin/product/ProductFilters";
 import ProductActions from "@/components/admin/product/ProductActions";
 import DraggableProductTable from "@/components/admin/product/DraggableProductTable";
-import { lov-add-dependency>react-beautiful-dnd@13.1.1</lov-add-dependency>
+import { DragDropContext } from "react-beautiful-dnd";
 
 // Örnek ürün verileri
 const initialProducts = [
