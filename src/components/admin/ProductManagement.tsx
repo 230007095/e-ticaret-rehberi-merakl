@@ -1,22 +1,10 @@
-
 import { useState } from "react";
-import { Plus, Search, Edit, Trash, FileUp, Filter, Image as ImageIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
-import ProductForm from "@/components/inventory/ProductForm";
-import BulkProductImport from "@/components/inventory/BulkProductImport";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import ProductFilters from "@/components/admin/product/ProductFilters";
+import ProductActions from "@/components/admin/product/ProductActions";
+import DraggableProductTable from "@/components/admin/product/DraggableProductTable";
+import { lov-add-dependency>react-beautiful-dnd@13.1.1</lov-add-dependency>
 
 // Örnek ürün verileri
 const initialProducts = [
@@ -117,9 +105,7 @@ export const ProductManagement = () => {
   const [firmFilter, setFirmFilter] = useState<string>("");
   const [categoryFilter, setCategoryFilter] = useState<string>("");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState<any>(null);
 
   // Firmalar, kategoriler ve alt kategorileri çıkar
   const firms = Array.from(new Set(products.map(p => p.firm)));
@@ -141,7 +127,7 @@ export const ProductManagement = () => {
   // Yeni ürün ekleme
   const handleAddProduct = (product: any) => {
     const newProduct = {
-      id: products.length + 1,
+      id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
       ...product
     };
     
@@ -156,11 +142,10 @@ export const ProductManagement = () => {
   // Ürün düzenleme
   const handleEditProduct = (product: any) => {
     const updatedProducts = products.map(p => 
-      p.id === currentProduct.id ? { ...p, ...product } : p
+      p.id === product.id ? { ...p, ...product } : p
     );
     
     setProducts(updatedProducts);
-    setIsEditDialogOpen(false);
     toast({
       title: "Ürün güncellendi",
       description: `${product.name} başarıyla güncellendi.`
@@ -175,12 +160,6 @@ export const ProductManagement = () => {
       title: "Ürün silindi",
       description: "Ürün başarıyla silindi."
     });
-  };
-
-  // Düzenleme diyaloğunu açma
-  const openEditDialog = (product: any) => {
-    setCurrentProduct(product);
-    setIsEditDialogOpen(true);
   };
 
   // Toplu ürün ekleme
@@ -207,183 +186,48 @@ export const ProductManagement = () => {
     setCategoryFilter("");
   };
 
+  // Ürünleri yeniden sıralama
+  const handleReorderProducts = (reorderedProducts: any[]) => {
+    setProducts(reorderedProducts);
+    toast({
+      title: "Sıralama güncellendi",
+      description: "Ürün sıralaması başarıyla güncellendi."
+    });
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full md:w-auto">
-          <div className="relative w-full md:w-64">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Ürün ara..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9"
-            />
-          </div>
-          
-          <Select value={firmFilter} onValueChange={setFirmFilter}>
-            <SelectTrigger className="w-full md:w-48">
-              <SelectValue placeholder="Firma Filtrele" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">Tüm Firmalar</SelectItem>
-              {firms.map(firm => (
-                <SelectItem key={firm} value={firm}>{firm}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          
-          <Select 
-            value={categoryFilter} 
-            onValueChange={setCategoryFilter} 
-            disabled={!categories.length}
-          >
-            <SelectTrigger className="w-full md:w-48">
-              <SelectValue placeholder="Kategori Filtrele" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">Tüm Kategoriler</SelectItem>
-              {categories.map(category => (
-                <SelectItem key={category} value={category}>{category}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          
-          {(searchTerm || firmFilter || categoryFilter) && (
-            <Button variant="ghost" onClick={clearFilters} className="flex-shrink-0">
-              Filtreleri Temizle
-            </Button>
-          )}
-        </div>
+        <ProductFilters 
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          firmFilter={firmFilter}
+          setFirmFilter={setFirmFilter}
+          categoryFilter={categoryFilter}
+          setCategoryFilter={setCategoryFilter}
+          firms={firms}
+          categories={categories}
+          clearFilters={clearFilters}
+        />
         
-        <div className="flex space-x-2 w-full md:w-auto">
-          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Yeni Ürün Ekle
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
-              <DialogHeader>
-                <DialogTitle>Yeni Ürün Ekle</DialogTitle>
-              </DialogHeader>
-              <ProductForm 
-                onSubmit={handleAddProduct} 
-                onCancel={() => setIsAddDialogOpen(false)} 
-              />
-            </DialogContent>
-          </Dialog>
-          
-          <Dialog open={isBulkImportOpen} onOpenChange={setIsBulkImportOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline">
-                <FileUp className="h-4 w-4 mr-2" />
-                Toplu Ekle
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
-              <DialogHeader>
-                <DialogTitle>Toplu Ürün Ekle</DialogTitle>
-              </DialogHeader>
-              <BulkProductImport 
-                onImport={handleBulkImport}
-                onClose={() => setIsBulkImportOpen(false)}
-              />
-            </DialogContent>
-          </Dialog>
-        </div>
+        <ProductActions 
+          isAddDialogOpen={isAddDialogOpen}
+          setIsAddDialogOpen={setIsAddDialogOpen}
+          isBulkImportOpen={isBulkImportOpen}
+          setIsBulkImportOpen={setIsBulkImportOpen}
+          handleAddProduct={handleAddProduct}
+          handleBulkImport={handleBulkImport}
+        />
       </div>
 
       {/* Ürün Listesi */}
       {filteredProducts.length > 0 ? (
-        <div className="border rounded-md overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-12"></TableHead>
-                <TableHead>SKU</TableHead>
-                <TableHead>Ürün Adı</TableHead>
-                <TableHead>Firma</TableHead>
-                <TableHead>Kategori</TableHead>
-                <TableHead className="text-center">Stok</TableHead>
-                <TableHead className="text-right">Fiyat</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredProducts.map((product) => (
-                <TableRow key={product.id}>
-                  <TableCell>
-                    {product.image ? (
-                      <img 
-                        src={product.image} 
-                        alt={product.name} 
-                        className="w-10 h-10 object-cover rounded-md" 
-                      />
-                    ) : (
-                      <div className="w-10 h-10 bg-gray-100 flex items-center justify-center rounded-md">
-                        <ImageIcon className="h-5 w-5 text-gray-400" />
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell className="font-medium">{product.sku}</TableCell>
-                  <TableCell>
-                    <div>
-                      {product.name}
-                      {product.subcategory && (
-                        <Badge variant="outline" className="ml-2">{product.subcategory}</Badge>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell>{product.firm}</TableCell>
-                  <TableCell>{product.category || "-"}</TableCell>
-                  <TableCell className="text-center">
-                    <Badge variant={product.stock > 50 ? "default" : product.stock > 10 ? "secondary" : "destructive"}>
-                      {product.stock}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">{product.price.toLocaleString('tr-TR', {style: 'currency', currency: 'TRY'})}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Dialog open={isEditDialogOpen && currentProduct?.id === product.id} onOpenChange={(open) => {
-                        if (!open) setCurrentProduct(null);
-                        setIsEditDialogOpen(open);
-                      }}>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          onClick={() => openEditDialog(product)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        {currentProduct && currentProduct.id === product.id && (
-                          <DialogContent className="sm:max-w-[600px]">
-                            <DialogHeader>
-                              <DialogTitle>Ürün Düzenle</DialogTitle>
-                            </DialogHeader>
-                            <ProductForm 
-                              product={currentProduct} 
-                              onSubmit={handleEditProduct} 
-                              onCancel={() => setIsEditDialogOpen(false)} 
-                            />
-                          </DialogContent>
-                        )}
-                      </Dialog>
-                      <Button 
-                        variant="ghost" 
-                        size="icon"
-                        onClick={() => handleDeleteProduct(product.id)}
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <DraggableProductTable 
+          products={filteredProducts}
+          onEdit={handleEditProduct}
+          onDelete={handleDeleteProduct}
+          onReorder={handleReorderProducts}
+        />
       ) : (
         <Alert>
           <AlertDescription>
