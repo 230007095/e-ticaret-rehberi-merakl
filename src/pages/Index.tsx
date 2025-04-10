@@ -16,7 +16,7 @@ const Index = () => {
       <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">Hoş Geldiniz!</h1>
-          <p className="text-xl md:text-2xl mb-8">Endüstriyel komponentlerde güvenilir tedarikçiniz - CMK Yapımarket</p>
+          <p className="text-xl md:text-2xl mb-8">Endüstriyel komponentlerde güvenilir tedarikçiniz CMK YapıMarket</p>
           <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
             Alışverişe Başla
           </Button>
