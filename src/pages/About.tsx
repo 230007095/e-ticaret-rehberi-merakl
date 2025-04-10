@@ -1,29 +1,10 @@
-
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { 
-  Building, 
-  Users, 
-  Target, 
-  Award, 
-  TrendingUp, 
-  Map, 
-  MailOpen, 
-  Phone
-} from "lucide-react";
-
+import { Building, Users, Target, Award, TrendingUp, Map, MailOpen, Phone } from "lucide-react";
 const About = () => {
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Navbar />
       
       {/* Hero Bölümü */}
@@ -115,11 +96,7 @@ const About = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <img 
-                src="https://images.unsplash.com/photo-1565372195458-9de0b320ef04?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80" 
-                alt="Şirket tarihi" 
-                className="rounded-lg shadow-lg w-full"
-              />
+              <img alt="Şirket tarihi" className="rounded-lg shadow-lg w-full" src="/lovable-uploads/08d9ea7d-9bce-4f1e-a1af-03b39186d8f2.png" />
             </div>
             
             <div className="space-y-4">
@@ -170,42 +147,31 @@ const About = () => {
           <h2 className="text-3xl font-bold mb-8 text-center">Takımımız</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[
-              {
-                name: "Ahmet Yılmaz",
-                position: "Genel Müdür",
-                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-              },
-              {
-                name: "Ayşe Demir",
-                position: "Satış Direktörü",
-                image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-              },
-              {
-                name: "Mehmet Kaya",
-                position: "Ürün Müdürü",
-                image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-              },
-              {
-                name: "Zeynep Şahin",
-                position: "Pazarlama Müdürü",
-                image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-              },
-            ].map((member, index) => (
-              <Card key={index}>
+            {[{
+            name: "Ahmet Yılmaz",
+            position: "Genel Müdür",
+            image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
+          }, {
+            name: "Ayşe Demir",
+            position: "Satış Direktörü",
+            image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
+          }, {
+            name: "Mehmet Kaya",
+            position: "Ürün Müdürü",
+            image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
+          }, {
+            name: "Zeynep Şahin",
+            position: "Pazarlama Müdürü",
+            image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
+          }].map((member, index) => <Card key={index}>
                 <CardContent className="p-0">
-                  <img 
-                    src={member.image} 
-                    alt={member.name} 
-                    className="w-full h-48 object-cover object-center"
-                  />
+                  <img src={member.image} alt={member.name} className="w-full h-48 object-cover object-center" />
                 </CardContent>
                 <CardFooter className="flex flex-col items-start p-4">
                   <h3 className="font-bold text-lg">{member.name}</h3>
                   <p className="text-gray-600">{member.position}</p>
                 </CardFooter>
-              </Card>
-            ))}
+              </Card>)}
           </div>
           
           <div className="text-center mt-12">
@@ -246,39 +212,31 @@ const About = () => {
           <h2 className="text-3xl font-bold mb-12 text-center">Neden Yapımarket?</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <Award className="h-10 w-10 text-blue-600" />,
-                title: "Kalite Garantisi",
-                description: "Sadece en kaliteli ve sertifikalı ürünleri sunuyoruz.",
-              },
-              {
-                icon: <TrendingUp className="h-10 w-10 text-blue-600" />,
-                title: "Geniş Ürün Yelpazesi",
-                description: "10.000'den fazla endüstriyel komponent ve makine elemanı.",
-              },
-              {
-                icon: <Users className="h-10 w-10 text-blue-600" />,
-                title: "Uzman Kadro",
-                description: "Alanında uzman teknik ekibimiz ile her zaman yanınızdayız.",
-              },
-              {
-                icon: <Map className="h-10 w-10 text-blue-600" />,
-                title: "Hızlı Teslimat",
-                description: "Türkiye'nin her yerine hızlı ve güvenli teslimat imkanı.",
-              },
-              {
-                icon: <MailOpen className="h-10 w-10 text-blue-600" />,
-                title: "7/24 Destek",
-                description: "Sorularınız için her zaman destek ekibimize ulaşabilirsiniz.",
-              },
-              {
-                icon: <Building className="h-10 w-10 text-blue-600" />,
-                title: "Çözüm Ortağınız",
-                description: "Projelerinizde güvenilir bir çözüm ortağı olarak yanınızdayız.",
-              },
-            ].map((item, index) => (
-              <Card key={index} className="border-none shadow-md hover:shadow-lg transition-shadow">
+            {[{
+            icon: <Award className="h-10 w-10 text-blue-600" />,
+            title: "Kalite Garantisi",
+            description: "Sadece en kaliteli ve sertifikalı ürünleri sunuyoruz."
+          }, {
+            icon: <TrendingUp className="h-10 w-10 text-blue-600" />,
+            title: "Geniş Ürün Yelpazesi",
+            description: "10.000'den fazla endüstriyel komponent ve makine elemanı."
+          }, {
+            icon: <Users className="h-10 w-10 text-blue-600" />,
+            title: "Uzman Kadro",
+            description: "Alanında uzman teknik ekibimiz ile her zaman yanınızdayız."
+          }, {
+            icon: <Map className="h-10 w-10 text-blue-600" />,
+            title: "Hızlı Teslimat",
+            description: "Türkiye'nin her yerine hızlı ve güvenli teslimat imkanı."
+          }, {
+            icon: <MailOpen className="h-10 w-10 text-blue-600" />,
+            title: "7/24 Destek",
+            description: "Sorularınız için her zaman destek ekibimize ulaşabilirsiniz."
+          }, {
+            icon: <Building className="h-10 w-10 text-blue-600" />,
+            title: "Çözüm Ortağınız",
+            description: "Projelerinizde güvenilir bir çözüm ortağı olarak yanınızdayız."
+          }].map((item, index) => <Card key={index} className="border-none shadow-md hover:shadow-lg transition-shadow">
                 <CardHeader className="pb-2">
                   <div className="mb-4">{item.icon}</div>
                   <CardTitle>{item.title}</CardTitle>
@@ -286,15 +244,12 @@ const About = () => {
                 <CardContent>
                   <p className="text-gray-600">{item.description}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </div>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default About;
