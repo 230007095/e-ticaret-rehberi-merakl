@@ -2,28 +2,22 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ShoppingCart, Search, Menu, User, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
-
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { user, logout, isAuthenticated } = useAuth();
-  const { totalItems } = useCart();
+  const {
+    user,
+    logout,
+    isAuthenticated
+  } = useAuth();
+  const {
+    totalItems
+  } = useCart();
   const navigate = useNavigate();
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -31,9 +25,7 @@ const Navbar = () => {
       navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
     }
   };
-
-  return (
-    <header className="border-b sticky top-0 bg-white z-50">
+  return <header className="border-b sticky top-0 bg-white z-50">
       <div className="container mx-auto max-w-6xl px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Mobile Menu */}
@@ -51,8 +43,7 @@ const Navbar = () => {
                   <Link to="/firms" className="text-lg font-medium">Firmalar</Link>
                   <Link to="/about" className="text-lg font-medium">Hakkımızda</Link>
                   <Link to="/contact" className="text-lg font-medium">İletişim</Link>
-                  {isAuthenticated ? (
-                    <>
+                  {isAuthenticated ? <>
                       <div className="text-lg font-medium">Merhaba, {user?.name}</div>
                       <Link to="/profile" className="text-lg font-medium">Profilim</Link>
                       <Link to="/orders" className="text-lg font-medium">Siparişlerim</Link>
@@ -60,20 +51,17 @@ const Navbar = () => {
                         <LogOut className="mr-2 h-4 w-4" />
                         Çıkış Yap
                       </Button>
-                    </>
-                  ) : (
-                    <>
+                    </> : <>
                       <Link to="/login" className="text-lg font-medium">Giriş Yap</Link>
                       <Link to="/signup" className="text-lg font-medium">Kayıt Ol</Link>
-                    </>
-                  )}
+                    </>}
                 </div>
               </SheetContent>
             </Sheet>
           </div>
 
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-blue-600">Yapımarket</Link>
+          <Link to="/" className="text-2xl font-bold text-blue-600">CMK YAPI MARKET</Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
@@ -88,19 +76,8 @@ const Navbar = () => {
           <div className="flex items-center space-x-2">
             <div className="hidden md:flex items-center relative">
               <form onSubmit={handleSearch}>
-                <Input
-                  type="text"
-                  placeholder="Ürün ara..."
-                  className="w-64 pr-10"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Button 
-                  type="submit" 
-                  variant="ghost" 
-                  size="icon" 
-                  className="absolute right-0 top-0 h-full"
-                >
+                <Input type="text" placeholder="Ürün ara..." className="w-64 pr-10" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
+                <Button type="submit" variant="ghost" size="icon" className="absolute right-0 top-0 h-full">
                   <Search className="text-gray-400" size={18} />
                 </Button>
               </form>
@@ -109,16 +86,13 @@ const Navbar = () => {
             <Button variant="ghost" size="icon" className="md:ml-2 relative" asChild>
               <Link to="/cart">
                 <ShoppingCart />
-                {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {totalItems > 0 && <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {totalItems}
-                  </span>
-                )}
+                  </span>}
               </Link>
             </Button>
             
-            {isAuthenticated ? (
-              <DropdownMenu>
+            {isAuthenticated ? <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon">
                     <User />
@@ -141,9 +115,7 @@ const Navbar = () => {
                     Çıkış Yap
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <DropdownMenu>
+              </DropdownMenu> : <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon">
                     <User />
@@ -157,34 +129,20 @@ const Navbar = () => {
                     <Link to="/signup" className="cursor-pointer">Kayıt Ol</Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
-            )}
+              </DropdownMenu>}
           </div>
         </div>
         
         {/* Mobile Search */}
         <div className="mt-4 md:hidden">
           <form onSubmit={handleSearch} className="relative">
-            <Input
-              type="text"
-              placeholder="Ürün ara..."
-              className="w-full pr-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <Button 
-              type="submit" 
-              variant="ghost" 
-              size="icon" 
-              className="absolute right-0 top-0 h-full"
-            >
+            <Input type="text" placeholder="Ürün ara..." className="w-full pr-10" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
+            <Button type="submit" variant="ghost" size="icon" className="absolute right-0 top-0 h-full">
               <Search className="text-gray-400" size={18} />
             </Button>
           </form>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
-
 export default Navbar;

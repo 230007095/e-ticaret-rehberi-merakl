@@ -1,9 +1,6 @@
-
 import { Link } from "react-router-dom";
-
 const Footer = () => {
-  return (
-    <footer className="bg-gray-900 text-white mt-auto">
+  return <footer className="bg-gray-900 text-white mt-auto">
       <div className="container mx-auto max-w-6xl px-4 py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
@@ -38,9 +35,9 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4">İletişim</h3>
             <address className="text-gray-400 not-italic">
-              <p className="mb-2">İstanbul, Türkiye</p>
+              <p className="mb-2">Gaziantep, Türkiye</p>
               <p className="mb-2">info@e-market.com</p>
-              <p>+90 555 123 4567</p>
+              <p>+90 554 964 93 58</p>
             </address>
           </div>
         </div>
@@ -49,8 +46,6 @@ const Footer = () => {
           <p>&copy; {new Date().getFullYear()} E-Market. Tüm hakları saklıdır.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;

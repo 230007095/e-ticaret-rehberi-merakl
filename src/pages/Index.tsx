@@ -1,12 +1,5 @@
-
 import { useState } from "react";
-import { 
-  Card, 
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { ShoppingCart, Heart } from "lucide-react";
@@ -15,17 +8,15 @@ import Footer from "@/components/Footer";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import Firms from "@/components/Firms";
 import ProductCard from "@/components/ProductCard";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Navbar />
       
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">Hoş Geldiniz!</h1>
-          <p className="text-xl md:text-2xl mb-8">Endüstriyel komponentlerde güvenilir tedarikçiniz - Yapımarket</p>
+          <p className="text-xl md:text-2xl mb-8">Endüstriyel komponentlerde güvenilir tedarikçiniz - CMK Yapımarket</p>
           <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
             Alışverişe Başla
           </Button>
@@ -86,11 +77,7 @@ const Index = () => {
           <h2 className="text-3xl font-bold mb-4">Bültenimize Abone Olun</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">Yeni ürünler, özel indirimler ve kampanyalardan haberdar olmak için bültenimize abone olun.</p>
           <div className="flex flex-col md:flex-row gap-4 justify-center max-w-md mx-auto">
-            <input 
-              type="email" 
-              placeholder="E-posta adresiniz" 
-              className="px-4 py-3 rounded-md text-gray-800 w-full"
-            />
+            <input type="email" placeholder="E-posta adresiniz" className="px-4 py-3 rounded-md text-gray-800 w-full" />
             <Button className="bg-white text-blue-600 hover:bg-gray-100">
               Abone Ol
             </Button>
@@ -99,8 +86,6 @@ const Index = () => {
       </div>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
