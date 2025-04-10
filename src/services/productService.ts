@@ -1,6 +1,9 @@
 
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
+
 export interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   oldPrice?: number;
@@ -10,193 +13,325 @@ export interface Product {
   stock: number;
   sku: string;
   description: string;
+  category?: string;
+  subcategory?: string;
+  firmId?: string;
+  categoryId?: string;
 }
 
-// Örnek ürün verileri - FeaturedProducts.tsx dosyasından kopyalandı
-export const dummyProducts: Product[] = [
-  {
-    id: 1,
-    name: "Ayarlanabilir Kol GN.15",
-    price: 899.99,
-    oldPrice: 1299.99,
-    image: "https://images.unsplash.com/photo-1601924582970-9238bcb495d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
-    rating: 4.5,
-    firm: "Elesa Ganter",
-    stock: 42,
-    sku: "EG-AK-15-001",
-    description: "Endüstriyel uygulamalar için yüksek kaliteli ayarlanabilir kol. Paslanmaz çelik yapısı ile uzun ömürlü kullanım sağlar."
-  },
-  {
-    id: 2,
-    name: "Paslanmaz Çelik Menteşe HB.25",
-    price: 249.99,
-    oldPrice: 349.99,
-    image: "https://images.unsplash.com/photo-1574359173043-01fe81602379?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    rating: 4,
-    firm: "Elesa Ganter",
-    stock: 78,
-    sku: "EG-PCM-25-002",
-    description: "AISI 316 paslanmaz çelikten üretilen, ağır yük kapasiteli menteşe. Yüksek korozyon direnci ve dayanıklılık sağlar."
-  },
-  {
-    id: 3,
-    name: "Yaylı Pim DIN.1481",
-    price: 89.99,
-    image: "https://images.unsplash.com/photo-1590959651373-a3db0f38a961?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    rating: 5,
-    firm: "Halder",
-    stock: 150,
-    sku: "HA-YP-1481-003",
-    description: "DIN 1481 standardına uygun, çeşitli çaplarda ve uzunluklarda yaylı pim. Geçici ve kalıcı bağlantılar için ideal."
-  },
-  {
-    id: 4,
-    name: "Pozisyon Göstergesi DD.52",
-    price: 349.99,
-    image: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    rating: 4,
-    firm: "Kipp",
-    stock: 35,
-    sku: "KP-PG-52-004",
-    description: "Dijital pozisyon göstergesi, hareket yönü ve konumlandırma için hassas okuma sağlar. Kolay montaj ve kullanım."
-  },
-  {
-    id: 5,
-    name: "Sıkıştırma Kolu GN.300",
-    price: 179.99,
-    oldPrice: 249.99,
-    image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    rating: 4.5,
-    firm: "Elesa Ganter",
-    stock: 57,
-    sku: "EG-SK-300-005",
-    description: "Ergonomik tasarımlı sıkıştırma kolu, rahat kavrama ve yüksek sıkıştırma kuvveti sağlar. Çeşitli endüstriyel uygulamalarda kullanılır."
-  },
-  {
-    id: 6,
-    name: "Ayarlanabilir Ayak LV.F",
-    price: 149.99,
-    image: "https://images.unsplash.com/photo-1570937943-0e29465a13bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    rating: 3.5,
-    firm: "Schmalz",
-    stock: 62,
-    sku: "SC-AA-F-006",
-    description: "Makineler için yüksekliği ayarlanabilir ayak. Anti-titreşim özellikleri ile makine stabilitesini artırır."
-  },
-  {
-    id: 7,
-    name: "Linear Hareket Kelepçesi",
-    price: 129.99,
-    image: "https://images.unsplash.com/photo-1615948165701-07116d84171c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    rating: 4.5,
-    firm: "Winkel",
-    stock: 40,
-    sku: "WN-LHK-007",
-    description: "Linear hareket sistemleri için hassas kelepçe. Kolay montaj ve ayarlama imkanı sunar."
-  },
-  {
-    id: 8,
-    name: "Vidalı Mil TR.20x4",
-    price: 299.99,
-    oldPrice: 449.99,
-    image: "https://images.unsplash.com/photo-1647607468858-0dcb7583501e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    rating: 4,
-    firm: "Norelem",
-    stock: 28,
-    sku: "NO-VM-20-008",
-    description: "Trapez vidalı mil, hassas hareket ve konumlandırma için ideal. Yüksek yük kapasitesi ve uzun kullanım ömrü sunar."
-  },
-  {
-    id: 9,
-    name: "Yüksek Hassasiyetli Rulman",
-    price: 499.99,
-    image: "https://images.unsplash.com/photo-1532615026289-513e2b42c909?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    rating: 4.5,
-    firm: "Halder",
-    stock: 15,
-    sku: "HA-YHR-009",
-    description: "Yüksek hız ve yük kapasitesine sahip hassas rulman. Düşük sürtünme ve uzun ömür sunar."
-  },
-  {
-    id: 10,
-    name: "Paslanmaz Çelik Bağlantı Elemanı",
-    price: 129.99,
-    oldPrice: 179.99,
-    image: "https://images.unsplash.com/photo-1617791160536-598cf32026fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    rating: 4,
-    firm: "Elesa Ganter",
-    stock: 55,
-    sku: "EG-PCBE-010",
-    description: "AISI 316 paslanmaz çelikten üretilen bağlantı elemanı. Yüksek korozyon direnci ve dayanıklılık sağlar."
-  },
-  {
-    id: 11,
-    name: "Dijital Ölçüm Cihazı",
-    price: 799.99,
-    image: "https://images.unsplash.com/photo-1544137829-948d84ee3246?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    rating: 5,
-    firm: "Kipp",
-    stock: 8,
-    sku: "KP-DOC-011",
-    description: "Yüksek hassasiyetli dijital ölçüm cihazı. 0.001mm hassasiyet, veri aktarım özelliği."
-  },
-  {
-    id: 12,
-    name: "Pnömatik Silindir",
-    price: 349.99,
-    oldPrice: 429.99,
-    image: "https://images.unsplash.com/photo-1665669923926-5f493b9e9922?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    rating: 4,
-    firm: "Schmalz",
-    stock: 22,
-    sku: "SC-PS-012",
-    description: "Çift etkili pnömatik silindir, standart montaj seçenekleri ile çeşitli uygulamalar için uygundur."
+export const getProducts = async (): Promise<Product[]> => {
+  try {
+    const { data: products, error } = await supabase
+      .from('products')
+      .select(`
+        *,
+        firms(name)
+      `)
+      .order('name');
+    
+    if (error) {
+      console.error("Error fetching products:", error);
+      toast({
+        title: "Hata",
+        description: "Ürünler yüklenirken bir hata oluştu.",
+        variant: "destructive"
+      });
+      return [];
+    }
+    
+    return products.map(product => ({
+      id: product.id,
+      name: product.name,
+      price: Number(product.price),
+      oldPrice: product.old_price ? Number(product.old_price) : undefined,
+      image: product.image_url || "https://via.placeholder.com/300?text=Ürün+Görseli",
+      rating: Number(product.rating) || 0,
+      firm: product.firms?.name || "-",
+      stock: product.stock || 0,
+      sku: product.sku,
+      description: product.description || "",
+      subcategory: product.subcategory,
+      firmId: product.firm_id,
+      categoryId: product.category_id
+    }));
+  } catch (err) {
+    console.error("Error in getProducts:", err);
+    return [];
   }
-];
+};
 
-export const getFilteredProducts = (
-  products: Product[],
-  searchQuery: string,
-  selectedFirm: string,
-  priceRange: number[],
-  sortOption: string
-): Product[] => {
-  let result = [...products];
-  
-  // Arama filtresi
-  if (searchQuery) {
-    result = result.filter(product => 
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+export const getFilteredProducts = async (
+  searchQuery: string = "",
+  selectedFirm: string = "",
+  priceRange: number[] = [0, 10000],
+  sortOption: string = "featured"
+): Promise<Product[]> => {
+  try {
+    let query = supabase
+      .from('products')
+      .select(`
+        *,
+        firms(name),
+        categories(name)
+      `);
+    
+    // Arama filtresi
+    if (searchQuery) {
+      query = query.or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,sku.ilike.%${searchQuery}%`);
+    }
+    
+    // Firma filtresi
+    if (selectedFirm && selectedFirm !== "Tümü") {
+      query = query.eq('firms.name', selectedFirm);
+    }
+    
+    // Fiyat aralığı filtresi
+    query = query.gte('price', priceRange[0]).lte('price', priceRange[1]);
+    
+    // Sıralama
+    switch (sortOption) {
+      case "price-asc":
+        query = query.order('price', { ascending: true });
+        break;
+      case "price-desc":
+        query = query.order('price', { ascending: false });
+        break;
+      case "name-asc":
+        query = query.order('name', { ascending: true });
+        break;
+      case "name-desc":
+        query = query.order('name', { ascending: false });
+        break;
+      default:
+        query = query.order('created_at', { ascending: false });
+    }
+    
+    const { data: products, error } = await query;
+    
+    if (error) {
+      console.error("Error fetching filtered products:", error);
+      toast({
+        title: "Hata",
+        description: "Ürünler filtrelenirken bir hata oluştu.",
+        variant: "destructive"
+      });
+      return [];
+    }
+    
+    return products.map(product => ({
+      id: product.id,
+      name: product.name,
+      price: Number(product.price),
+      oldPrice: product.old_price ? Number(product.old_price) : undefined,
+      image: product.image_url || "https://via.placeholder.com/300?text=Ürün+Görseli",
+      rating: Number(product.rating) || 0,
+      firm: product.firms?.name || "-",
+      category: product.categories?.name,
+      stock: product.stock || 0,
+      sku: product.sku,
+      description: product.description || "",
+      subcategory: product.subcategory
+    }));
+  } catch (err) {
+    console.error("Error in getFilteredProducts:", err);
+    return [];
   }
-  
-  // Firma filtresi
-  if (selectedFirm !== "Tümü") {
-    result = result.filter(product => product.firm === selectedFirm);
+};
+
+export const getProductById = async (id: string): Promise<Product | null> => {
+  try {
+    const { data: product, error } = await supabase
+      .from('products')
+      .select(`
+        *,
+        firms(name),
+        categories(name)
+      `)
+      .eq('id', id)
+      .single();
+    
+    if (error) {
+      console.error("Error fetching product details:", error);
+      return null;
+    }
+    
+    return {
+      id: product.id,
+      name: product.name,
+      price: Number(product.price),
+      oldPrice: product.old_price ? Number(product.old_price) : undefined,
+      image: product.image_url || "https://via.placeholder.com/300?text=Ürün+Görseli",
+      rating: Number(product.rating) || 0,
+      firm: product.firms?.name || "-",
+      category: product.categories?.name,
+      stock: product.stock || 0,
+      sku: product.sku,
+      description: product.description || "",
+      subcategory: product.subcategory,
+      firmId: product.firm_id,
+      categoryId: product.category_id
+    };
+  } catch (err) {
+    console.error("Error in getProductById:", err);
+    return null;
   }
-  
-  // Fiyat aralığı filtresi
-  result = result.filter(product => 
-    product.price >= priceRange[0] && product.price <= priceRange[1]
-  );
-  
-  // Sıralama
-  switch (sortOption) {
-    case "price-asc":
-      result.sort((a, b) => a.price - b.price);
-      break;
-    case "price-desc":
-      result.sort((a, b) => b.price - a.price);
-      break;
-    case "name-asc":
-      result.sort((a, b) => a.name.localeCompare(b.name));
-      break;
-    case "name-desc":
-      result.sort((a, b) => b.name.localeCompare(a.name));
-      break;
-    // featured veya varsayılan durumda sıralama yok
+};
+
+export const getFirms = async (): Promise<{id: string, name: string}[]> => {
+  try {
+    const { data: firms, error } = await supabase
+      .from('firms')
+      .select('id, name')
+      .order('name');
+    
+    if (error) {
+      console.error("Error fetching firms:", error);
+      return [];
+    }
+    
+    return firms;
+  } catch (err) {
+    console.error("Error in getFirms:", err);
+    return [];
   }
-  
-  return result;
+};
+
+export const getCategories = async (): Promise<{id: string, name: string}[]> => {
+  try {
+    const { data: categories, error } = await supabase
+      .from('categories')
+      .select('id, name')
+      .order('name');
+    
+    if (error) {
+      console.error("Error fetching categories:", error);
+      return [];
+    }
+    
+    return categories;
+  } catch (err) {
+    console.error("Error in getCategories:", err);
+    return [];
+  }
+};
+
+export const updateProduct = async (product: Product): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('products')
+      .update({
+        name: product.name,
+        sku: product.sku,
+        description: product.description,
+        price: product.price,
+        old_price: product.oldPrice,
+        stock: product.stock,
+        firm_id: product.firmId,
+        category_id: product.categoryId,
+        subcategory: product.subcategory,
+        rating: product.rating,
+        image_url: product.image,
+        updated_at: new Date()
+      })
+      .eq('id', product.id);
+    
+    if (error) {
+      console.error("Error updating product:", error);
+      toast({
+        title: "Hata",
+        description: "Ürün güncellenirken bir hata oluştu.",
+        variant: "destructive"
+      });
+      return false;
+    }
+    
+    toast({
+      title: "Başarılı",
+      description: "Ürün başarıyla güncellendi."
+    });
+    return true;
+  } catch (err) {
+    console.error("Error in updateProduct:", err);
+    return false;
+  }
+};
+
+export const createProduct = async (product: Omit<Product, 'id'>): Promise<string | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .insert({
+        name: product.name,
+        sku: product.sku,
+        description: product.description,
+        price: product.price,
+        old_price: product.oldPrice,
+        stock: product.stock,
+        firm_id: product.firmId,
+        category_id: product.categoryId,
+        subcategory: product.subcategory,
+        rating: product.rating || 0,
+        image_url: product.image
+      })
+      .select();
+    
+    if (error) {
+      console.error("Error creating product:", error);
+      toast({
+        title: "Hata",
+        description: "Ürün eklenirken bir hata oluştu.",
+        variant: "destructive"
+      });
+      return null;
+    }
+    
+    toast({
+      title: "Başarılı",
+      description: "Ürün başarıyla eklendi."
+    });
+    
+    // Ürün resmi varsa onu da ürün görselleri tablosuna ekle
+    if (product.image && data && data[0]) {
+      await supabase
+        .from('product_images')
+        .insert({
+          product_id: data[0].id,
+          url: product.image,
+          is_primary: true
+        });
+    }
+    
+    return data?.[0]?.id || null;
+  } catch (err) {
+    console.error("Error in createProduct:", err);
+    return null;
+  }
+};
+
+export const deleteProduct = async (id: string): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('products')
+      .delete()
+      .eq('id', id);
+    
+    if (error) {
+      console.error("Error deleting product:", error);
+      toast({
+        title: "Hata",
+        description: "Ürün silinirken bir hata oluştu.",
+        variant: "destructive"
+      });
+      return false;
+    }
+    
+    toast({
+      title: "Başarılı",
+      description: "Ürün başarıyla silindi."
+    });
+    return true;
+  } catch (err) {
+    console.error("Error in deleteProduct:", err);
+    return false;
+  }
 };

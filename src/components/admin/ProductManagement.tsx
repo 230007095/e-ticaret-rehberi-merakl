@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Search, Edit, Trash, FileUp, Filter, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,113 +17,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-// Örnek ürün verileri
-const initialProducts = [
-  {
-    id: 1,
-    name: "Ayarlanabilir Kol GN.15",
-    sku: "EG-AK-15-001",
-    firm: "Elesa Ganter",
-    category: "Kol",
-    subcategory: "Ayarlanabilir",
-    stock: 42,
-    price: 899.99,
-    image: "https://via.placeholder.com/100?text=GN.15"
-  },
-  {
-    id: 2,
-    name: "Paslanmaz Çelik Menteşe HB.25",
-    sku: "EG-PCM-25-002",
-    firm: "Elesa Ganter",
-    category: "Menteşe",
-    subcategory: "Paslanmaz",
-    stock: 78,
-    price: 249.99,
-    image: "https://via.placeholder.com/100?text=HB.25"
-  },
-  {
-    id: 3,
-    name: "Yaylı Pim DIN.1481",
-    sku: "HA-YP-1481-003",
-    firm: "Halder",
-    category: "Pim",
-    subcategory: "Yaylı",
-    stock: 150,
-    price: 89.99,
-    image: "https://via.placeholder.com/100?text=DIN.1481"
-  },
-  {
-    id: 4,
-    name: "Pozisyon Göstergesi DD.52",
-    sku: "KP-PG-52-004",
-    firm: "Kipp",
-    category: "Gösterge",
-    subcategory: "Pozisyon",
-    stock: 35,
-    price: 349.99,
-    image: ""
-  },
-  {
-    id: 5,
-    name: "Sıkıştırma Kolu GN.300",
-    sku: "EG-SK-300-005",
-    firm: "Elesa Ganter",
-    category: "Kol",
-    subcategory: "Sabit",
-    stock: 57,
-    price: 179.99,
-    image: ""
-  },
-  {
-    id: 6,
-    name: "Ayarlanabilir Ayak LV.F",
-    sku: "SC-AA-F-006",
-    firm: "Schmalz",
-    category: "Ayak",
-    subcategory: "Vidalı",
-    stock: 62,
-    price: 149.99,
-    image: ""
-  },
-  {
-    id: 7,
-    name: "Linear Hareket Kelepçesi",
-    sku: "WN-LHK-007",
-    firm: "Winkel",
-    category: "Kelepçe",
-    subcategory: "",
-    stock: 40,
-    price: 129.99,
-    image: ""
-  },
-  {
-    id: 8,
-    name: "Vidalı Mil TR.20x4",
-    sku: "NO-VM-20-008",
-    firm: "Norelem",
-    category: "Mil",
-    subcategory: "",
-    stock: 28,
-    price: 299.99,
-    image: ""
-  }
-];
+import { getProducts, getFirms, getCategories, deleteProduct, createProduct, updateProduct, Product } from "@/services/productService";
 
 export const ProductManagement = () => {
   const { toast } = useToast();
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [firmFilter, setFirmFilter] = useState<string>("");
   const [categoryFilter, setCategoryFilter] = useState<string>("");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState<any>(null);
-
-  // Firmalar, kategoriler ve alt kategorileri çıkar
-  const firms = Array.from(new Set(products.map(p => p.firm)));
-  const categories = Array.from(new Set(products.map(p => p.category))).filter(Boolean);
+  const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [firms, setFirms] = useState<{id: string, name: string}[]>([]);
+  const [categories, setCategories] = useState<{id: string, name: string}[]>([]);
+  
+  // Verileri yükle
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      const productsData = await getProducts();
+      setProducts(productsData);
+      
+      const firmsData = await getFirms();
+      setFirms(firmsData);
+      
+      const categoriesData = await getCategories();
+      setCategories(categoriesData);
+      
+      setLoading(false);
+    };
+    
+    loadData();
+  }, []);
 
   // Filtreleme fonksiyonu
   const filteredProducts = products.filter(product => {
@@ -139,65 +66,66 @@ export const ProductManagement = () => {
   });
 
   // Yeni ürün ekleme
-  const handleAddProduct = (product: any) => {
-    const newProduct = {
-      id: products.length + 1,
-      ...product
-    };
+  const handleAddProduct = async (product: Omit<Product, 'id'>) => {
+    const newProductId = await createProduct(product);
     
-    setProducts([...products, newProduct]);
-    setIsAddDialogOpen(false);
-    toast({
-      title: "Ürün eklendi",
-      description: `${product.name} başarıyla eklendi.`
-    });
+    if (newProductId) {
+      // Yeni ürünü ekle ve listeyi güncelle
+      const productsData = await getProducts();
+      setProducts(productsData);
+      setIsAddDialogOpen(false);
+    }
   };
 
   // Ürün düzenleme
-  const handleEditProduct = (product: any) => {
-    const updatedProducts = products.map(p => 
-      p.id === currentProduct.id ? { ...p, ...product } : p
-    );
+  const handleEditProduct = async (product: Product) => {
+    const success = await updateProduct(product);
     
-    setProducts(updatedProducts);
-    setIsEditDialogOpen(false);
-    toast({
-      title: "Ürün güncellendi",
-      description: `${product.name} başarıyla güncellendi.`
-    });
+    if (success) {
+      // Ürünü güncelle ve listeyi yenile
+      const productsData = await getProducts();
+      setProducts(productsData);
+      setIsEditDialogOpen(false);
+      setCurrentProduct(null);
+    }
   };
 
   // Ürün silme
-  const handleDeleteProduct = (id: number) => {
-    const updatedProducts = products.filter(product => product.id !== id);
-    setProducts(updatedProducts);
-    toast({
-      title: "Ürün silindi",
-      description: "Ürün başarıyla silindi."
-    });
+  const handleDeleteProduct = async (id: string) => {
+    const success = await deleteProduct(id);
+    
+    if (success) {
+      // Ürünü listeden kaldır
+      setProducts(products.filter(product => product.id !== id));
+    }
   };
 
   // Düzenleme diyaloğunu açma
-  const openEditDialog = (product: any) => {
+  const openEditDialog = (product: Product) => {
     setCurrentProduct(product);
     setIsEditDialogOpen(true);
   };
 
   // Toplu ürün ekleme
-  const handleBulkImport = (importedProducts: any[]) => {
-    const lastId = products.length > 0 ? Math.max(...products.map(p => p.id)) : 0;
+  const handleBulkImport = async (importedProducts: Omit<Product, 'id'>[]) => {
+    let successCount = 0;
     
-    const newProducts = importedProducts.map((product, index) => ({
-      id: lastId + index + 1,
-      ...product
-    }));
+    for (const product of importedProducts) {
+      const newProductId = await createProduct(product);
+      if (newProductId) successCount++;
+    }
     
-    setProducts([...products, ...newProducts]);
-    setIsBulkImportOpen(false);
-    toast({
-      title: "Toplu ürün eklendi",
-      description: `${newProducts.length} ürün başarıyla eklendi.`
-    });
+    if (successCount > 0) {
+      // Listeyi güncelle
+      const productsData = await getProducts();
+      setProducts(productsData);
+      setIsBulkImportOpen(false);
+      
+      toast({
+        title: "Başarılı",
+        description: `${successCount} ürün başarıyla eklendi.`
+      });
+    }
   };
 
   // Filtreleri temizle
@@ -206,6 +134,12 @@ export const ProductManagement = () => {
     setFirmFilter("");
     setCategoryFilter("");
   };
+
+  // Firmalardan benzersiz firma adlarını çıkar
+  const uniqueFirms = Array.from(new Set(products.map(p => p.firm))).filter(Boolean);
+  
+  // Kategorilerden benzersiz kategori adlarını çıkar
+  const uniqueCategories = Array.from(new Set(products.map(p => p.category))).filter(Boolean) as string[];
 
   return (
     <div className="space-y-4">
@@ -227,7 +161,7 @@ export const ProductManagement = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">Tüm Firmalar</SelectItem>
-              {firms.map(firm => (
+              {uniqueFirms.map(firm => (
                 <SelectItem key={firm} value={firm}>{firm}</SelectItem>
               ))}
             </SelectContent>
@@ -236,14 +170,14 @@ export const ProductManagement = () => {
           <Select 
             value={categoryFilter} 
             onValueChange={setCategoryFilter} 
-            disabled={!categories.length}
+            disabled={!uniqueCategories.length}
           >
             <SelectTrigger className="w-full md:w-48">
               <SelectValue placeholder="Kategori Filtrele" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">Tüm Kategoriler</SelectItem>
-              {categories.map(category => (
+              {uniqueCategories.map(category => (
                 <SelectItem key={category} value={category}>{category}</SelectItem>
               ))}
             </SelectContent>
@@ -270,7 +204,9 @@ export const ProductManagement = () => {
               </DialogHeader>
               <ProductForm 
                 onSubmit={handleAddProduct} 
-                onCancel={() => setIsAddDialogOpen(false)} 
+                onCancel={() => setIsAddDialogOpen(false)}
+                firms={firms}
+                categories={categories}
               />
             </DialogContent>
           </Dialog>
@@ -295,8 +231,17 @@ export const ProductManagement = () => {
         </div>
       </div>
 
+      {/* Yükleniyor durumu */}
+      {loading && (
+        <div className="flex justify-center py-8">
+          <div className="animate-pulse text-center">
+            <p className="text-lg font-medium text-gray-500">Ürünler yükleniyor...</p>
+          </div>
+        </div>
+      )}
+
       {/* Ürün Listesi */}
-      {filteredProducts.length > 0 ? (
+      {!loading && filteredProducts.length > 0 ? (
         <div className="border rounded-md overflow-hidden">
           <Table>
             <TableHeader>
@@ -365,7 +310,9 @@ export const ProductManagement = () => {
                             <ProductForm 
                               product={currentProduct} 
                               onSubmit={handleEditProduct} 
-                              onCancel={() => setIsEditDialogOpen(false)} 
+                              onCancel={() => setIsEditDialogOpen(false)}
+                              firms={firms}
+                              categories={categories}
                             />
                           </DialogContent>
                         )}
@@ -384,13 +331,13 @@ export const ProductManagement = () => {
             </TableBody>
           </Table>
         </div>
-      ) : (
+      ) : !loading ? (
         <Alert>
           <AlertDescription>
             Arama kriterlerine uygun ürün bulunamadı.
           </AlertDescription>
         </Alert>
-      )}
+      ) : null}
     </div>
   );
 };
