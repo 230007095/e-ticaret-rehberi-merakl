@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Plus, Search, Edit, Trash, FileUp, Filter, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,7 +32,6 @@ export const ProductManagement = () => {
   const [firms, setFirms] = useState<{id: string, name: string}[]>([]);
   const [categories, setCategories] = useState<{id: string, name: string}[]>([]);
   
-  // Verileri yükle
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -52,7 +50,6 @@ export const ProductManagement = () => {
     loadData();
   }, []);
 
-  // Filtreleme fonksiyonu
   const filteredProducts = products.filter(product => {
     const matchesSearch = 
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -65,24 +62,20 @@ export const ProductManagement = () => {
     return matchesSearch && matchesFirm && matchesCategory;
   });
 
-  // Yeni ürün ekleme
   const handleAddProduct = async (product: Omit<Product, 'id'>) => {
     const newProductId = await createProduct(product);
     
     if (newProductId) {
-      // Yeni ürünü ekle ve listeyi güncelle
       const productsData = await getProducts();
       setProducts(productsData);
       setIsAddDialogOpen(false);
     }
   };
 
-  // Ürün düzenleme
   const handleEditProduct = async (product: Product) => {
     const success = await updateProduct(product);
     
     if (success) {
-      // Ürünü güncelle ve listeyi yenile
       const productsData = await getProducts();
       setProducts(productsData);
       setIsEditDialogOpen(false);
@@ -90,23 +83,19 @@ export const ProductManagement = () => {
     }
   };
 
-  // Ürün silme
   const handleDeleteProduct = async (id: string) => {
     const success = await deleteProduct(id);
     
     if (success) {
-      // Ürünü listeden kaldır
       setProducts(products.filter(product => product.id !== id));
     }
   };
 
-  // Düzenleme diyaloğunu açma
   const openEditDialog = (product: Product) => {
     setCurrentProduct(product);
     setIsEditDialogOpen(true);
   };
 
-  // Toplu ürün ekleme
   const handleBulkImport = async (importedProducts: Omit<Product, 'id'>[]) => {
     let successCount = 0;
     
@@ -116,7 +105,6 @@ export const ProductManagement = () => {
     }
     
     if (successCount > 0) {
-      // Listeyi güncelle
       const productsData = await getProducts();
       setProducts(productsData);
       setIsBulkImportOpen(false);
@@ -128,17 +116,13 @@ export const ProductManagement = () => {
     }
   };
 
-  // Filtreleri temizle
   const clearFilters = () => {
     setSearchTerm("");
     setFirmFilter("");
     setCategoryFilter("");
   };
 
-  // Firmalardan benzersiz firma adlarını çıkar
   const uniqueFirms = Array.from(new Set(products.map(p => p.firm))).filter(Boolean);
-  
-  // Kategorilerden benzersiz kategori adlarını çıkar
   const uniqueCategories = Array.from(new Set(products.map(p => p.category))).filter(Boolean) as string[];
 
   return (
@@ -205,8 +189,6 @@ export const ProductManagement = () => {
               <ProductForm 
                 onSubmit={handleAddProduct} 
                 onCancel={() => setIsAddDialogOpen(false)}
-                firms={firms}
-                categories={categories}
               />
             </DialogContent>
           </Dialog>
@@ -231,7 +213,6 @@ export const ProductManagement = () => {
         </div>
       </div>
 
-      {/* Yükleniyor durumu */}
       {loading && (
         <div className="flex justify-center py-8">
           <div className="animate-pulse text-center">
@@ -240,7 +221,6 @@ export const ProductManagement = () => {
         </div>
       )}
 
-      {/* Ürün Listesi */}
       {!loading && filteredProducts.length > 0 ? (
         <div className="border rounded-md overflow-hidden">
           <Table>
@@ -311,8 +291,6 @@ export const ProductManagement = () => {
                               product={currentProduct} 
                               onSubmit={handleEditProduct} 
                               onCancel={() => setIsEditDialogOpen(false)}
-                              firms={firms}
-                              categories={categories}
                             />
                           </DialogContent>
                         )}

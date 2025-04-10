@@ -6,21 +6,22 @@ export const useProductFilters = (initialProducts: Product[]) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFirm, setSelectedFirm] = useState("Tümü");
   const [priceRange, setPriceRange] = useState([0, 1500]);
-  const [products] = useState(initialProducts);
-  const [filteredProducts, setFilteredProducts] = useState(initialProducts);
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(initialProducts);
   const [sortOption, setSortOption] = useState("featured");
+  const [loading, setLoading] = useState(false);
 
-  // Ürünleri filtreleyen fonksiyon
+  // Fetch products from the database when filters change
   useEffect(() => {
-    const result = getFilteredProducts(
-      products,
-      searchQuery,
-      selectedFirm,
-      priceRange,
-      sortOption
-    );
-    setFilteredProducts(result);
-  }, [searchQuery, selectedFirm, priceRange, sortOption, products]);
+    const fetchProducts = async () => {
+      setLoading(true);
+      const result = await getFilteredProducts(searchQuery, selectedFirm, priceRange, sortOption);
+      setFilteredProducts(result);
+      setLoading(false);
+    };
+    
+    fetchProducts();
+  }, [searchQuery, selectedFirm, priceRange, sortOption]);
 
   const resetFilters = () => {
     setSearchQuery("");
@@ -45,6 +46,7 @@ export const useProductFilters = (initialProducts: Product[]) => {
     setSortOption,
     filteredProducts,
     resetFilters,
-    handleSearch
+    handleSearch,
+    loading
   };
 };

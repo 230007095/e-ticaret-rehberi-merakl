@@ -19,13 +19,42 @@ export interface Product {
   categoryId?: string;
 }
 
+// Provide some sample products for development/testing
+export const dummyProducts: Product[] = [
+  {
+    id: "1",
+    name: "Ayarlanabilir Kol GN.15",
+    price: 899.99,
+    oldPrice: 1299.99,
+    image: "https://images.unsplash.com/photo-1601924582970-9238bcb495d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
+    rating: 4.5,
+    firm: "Elesa Ganter",
+    stock: 42,
+    sku: "EG-AK-15-001",
+    description: "Endüstriyel uygulamalar için yüksek kaliteli ayarlanabilir kol. Paslanmaz çelik yapısı ile uzun ömürlü kullanım sağlar."
+  },
+  {
+    id: "2",
+    name: "Paslanmaz Çelik Menteşe HB.25",
+    price: 249.99,
+    oldPrice: 349.99,
+    image: "https://images.unsplash.com/photo-1574359173043-01fe81602379?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    rating: 4,
+    firm: "Elesa Ganter",
+    stock: 78,
+    sku: "EG-PCM-25-002",
+    description: "AISI 316 paslanmaz çelikten üretilen, ağır yük kapasiteli menteşe. Yüksek korozyon direnci ve dayanıklılık sağlar."
+  }
+];
+
 export const getProducts = async (): Promise<Product[]> => {
   try {
     const { data: products, error } = await supabase
       .from('products')
       .select(`
         *,
-        firms(name)
+        firms (name),
+        categories (name)
       `)
       .order('name');
     
@@ -51,6 +80,7 @@ export const getProducts = async (): Promise<Product[]> => {
       sku: product.sku,
       description: product.description || "",
       subcategory: product.subcategory,
+      category: product.categories?.name,
       firmId: product.firm_id,
       categoryId: product.category_id
     }));
@@ -71,8 +101,8 @@ export const getFilteredProducts = async (
       .from('products')
       .select(`
         *,
-        firms(name),
-        categories(name)
+        firms (name),
+        categories (name)
       `);
     
     // Arama filtresi
@@ -130,7 +160,9 @@ export const getFilteredProducts = async (
       stock: product.stock || 0,
       sku: product.sku,
       description: product.description || "",
-      subcategory: product.subcategory
+      subcategory: product.subcategory,
+      firmId: product.firm_id,
+      categoryId: product.category_id
     }));
   } catch (err) {
     console.error("Error in getFilteredProducts:", err);
@@ -144,8 +176,8 @@ export const getProductById = async (id: string): Promise<Product | null> => {
       .from('products')
       .select(`
         *,
-        firms(name),
-        categories(name)
+        firms (name),
+        categories (name)
       `)
       .eq('id', id)
       .single();
@@ -155,22 +187,25 @@ export const getProductById = async (id: string): Promise<Product | null> => {
       return null;
     }
     
-    return {
-      id: product.id,
-      name: product.name,
-      price: Number(product.price),
-      oldPrice: product.old_price ? Number(product.old_price) : undefined,
-      image: product.image_url || "https://via.placeholder.com/300?text=Ürün+Görseli",
-      rating: Number(product.rating) || 0,
-      firm: product.firms?.name || "-",
-      category: product.categories?.name,
-      stock: product.stock || 0,
-      sku: product.sku,
-      description: product.description || "",
-      subcategory: product.subcategory,
-      firmId: product.firm_id,
-      categoryId: product.category_id
-    };
+    if (product) {
+      return {
+        id: product.id,
+        name: product.name,
+        price: Number(product.price),
+        oldPrice: product.old_price ? Number(product.old_price) : undefined,
+        image: product.image_url || "https://via.placeholder.com/300?text=Ürün+Görseli",
+        rating: Number(product.rating) || 0,
+        firm: product.firms?.name || "-",
+        category: product.categories?.name,
+        stock: product.stock || 0,
+        sku: product.sku,
+        description: product.description || "",
+        subcategory: product.subcategory,
+        firmId: product.firm_id,
+        categoryId: product.category_id
+      };
+    }
+    return null;
   } catch (err) {
     console.error("Error in getProductById:", err);
     return null;
