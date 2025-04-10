@@ -32,7 +32,7 @@ const ProductsList = ({ products, resetFilters }: ProductsListProps) => {
           products.map((product) => (
             <ProductCard 
               key={product.id}
-              id={product.id}
+              id={typeof product.id === 'string' ? parseInt(product.id, 10) : product.id}
               name={product.name}
               price={product.price}
               oldPrice={product.oldPrice}

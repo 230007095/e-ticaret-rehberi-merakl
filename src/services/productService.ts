@@ -266,7 +266,7 @@ export const updateProduct = async (product: Product): Promise<boolean> => {
         subcategory: product.subcategory,
         rating: product.rating,
         image_url: product.image,
-        updated_at: new Date()
+        updated_at: new Date().toISOString()
       })
       .eq('id', product.id);
     
